@@ -23,7 +23,7 @@
 ---
 
 ## 3. Technology Stack
-- **Language / Runtime**: Java 17 / 21 / 22
+- **Language / Runtime**: Java 25 LTS
 - **Framework**: Spring Boot 3.3.3
 - **Data Persistence**: Spring Data JPA & Hibernate
 - **Database Engine**: Microsoft SQL Server (MS SQL) with `mssql-jdbc`
@@ -64,7 +64,7 @@
 ## 5. Prerequisites & Database Setup
 
 ### 5.1 Prerequisites
-1. **Java Development Kit (JDK)**: JDK 17, 21, or 22 installed (`java -version`).
+1. **Java Development Kit (JDK)**: JDK 25 installed (`java -version`).
 2. **Apache Maven**: Version 3.8+ installed (`mvn -version`).
 3. **Microsoft SQL Server**: Installed locally (Developer/Express) or via Docker on port `1433`.
 4. **SQL Server Management Studio (SSMS)** or `sqlcmd`.
