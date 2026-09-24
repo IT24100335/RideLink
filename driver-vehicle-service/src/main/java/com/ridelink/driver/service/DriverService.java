@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,16 +28,19 @@ public class DriverService {
     @Transactional
     public DriverResponse createDriver(DriverRequest request) {
         if (driverRepository.existsByAccountId(request.getAccountId())) {
-            throw new IllegalArgumentException("Driver profile already exists for Account ID: " + request.getAccountId());
+            throw new IllegalArgumentException(
+                    "Driver profile already exists for Account ID: " + request.getAccountId());
         }
         if (driverRepository.existsByLicenseNumber(request.getLicenseNumber().trim())) {
-            throw new IllegalArgumentException("License number '" + request.getLicenseNumber() + "' is already registered.");
+            throw new IllegalArgumentException(
+                    "License number '" + request.getLicenseNumber() + "' is already registered.");
         }
 
         Driver driver = new Driver();
         driver.setAccountId(request.getAccountId());
         driver.setLicenseNumber(request.getLicenseNumber().trim());
-        driver.setAvailability(request.getAvailability() != null ? request.getAvailability() : DriverAvailability.UNAVAILABLE);
+        driver.setAvailability(
+                request.getAvailability() != null ? request.getAvailability() : DriverAvailability.UNAVAILABLE);
         driver.setServiceArea(request.getServiceArea().trim());
         driver.setCurrentLatitude(request.getCurrentLatitude());
         driver.setCurrentLongitude(request.getCurrentLongitude());
@@ -46,14 +50,14 @@ public class DriverService {
     }
 
     public DriverResponse getDriverById(Long id) {
-        Driver driver = driverRepository.findById(id)
+        Driver driver = driverRepository.findById(Objects.requireNonNull(id, "Driver ID must not be null"))
                 .orElseThrow(() -> new ResourceNotFoundException("Driver not found with ID: " + id));
         return new DriverResponse(driver);
     }
 
     @Transactional
     public DriverResponse updateDriver(Long id, DriverRequest request) {
-        Driver driver = driverRepository.findById(id)
+        Driver driver = driverRepository.findById(Objects.requireNonNull(id, "Driver ID must not be null"))
                 .orElseThrow(() -> new ResourceNotFoundException("Driver not found with ID: " + id));
 
         driver.setServiceArea(request.getServiceArea().trim());
@@ -73,7 +77,7 @@ public class DriverService {
 
     @Transactional
     public DriverResponse updateAvailability(Long id, DriverAvailability availability) {
-        Driver driver = driverRepository.findById(id)
+        Driver driver = driverRepository.findById(Objects.requireNonNull(id, "Driver ID must not be null"))
                 .orElseThrow(() -> new ResourceNotFoundException("Driver not found with ID: " + id));
 
         driver.setAvailability(availability);
@@ -83,7 +87,7 @@ public class DriverService {
 
     @Transactional
     public DriverResponse updateLocation(Long id, Double latitude, Double longitude) {
-        Driver driver = driverRepository.findById(id)
+        Driver driver = driverRepository.findById(Objects.requireNonNull(id, "Driver ID must not be null"))
                 .orElseThrow(() -> new ResourceNotFoundException("Driver not found with ID: " + id));
 
         driver.setCurrentLatitude(latitude);
@@ -95,7 +99,8 @@ public class DriverService {
     public List<AvailableDriverResponse> getAvailableDrivers(String serviceArea) {
         List<Driver> drivers;
         if (serviceArea != null && !serviceArea.isBlank()) {
-            drivers = driverRepository.findByAvailabilityAndServiceAreaIgnoreCase(DriverAvailability.AVAILABLE, serviceArea.trim());
+            drivers = driverRepository.findByAvailabilityAndServiceAreaIgnoreCase(DriverAvailability.AVAILABLE,
+                    serviceArea.trim());
         } else {
             drivers = driverRepository.findByAvailability(DriverAvailability.AVAILABLE);
         }
@@ -107,11 +112,13 @@ public class DriverService {
 
     @Transactional
     public VehicleResponse registerVehicle(VehicleRequest request) {
-        Driver driver = driverRepository.findById(request.getDriverId())
+        Long driverId = Objects.requireNonNull(request.getDriverId(), "Driver ID must not be null");
+        Driver driver = driverRepository.findById(driverId)
                 .orElseThrow(() -> new ResourceNotFoundException("Driver not found with ID: " + request.getDriverId()));
 
         if (vehicleRepository.existsByVehicleNumber(request.getVehicleNumber().trim())) {
-            throw new IllegalArgumentException("Vehicle number '" + request.getVehicleNumber() + "' is already registered.");
+            throw new IllegalArgumentException(
+                    "Vehicle number '" + request.getVehicleNumber() + "' is already registered.");
         }
 
         Vehicle vehicle = vehicleRepository.findByDriverId(driver.getId()).orElse(new Vehicle());

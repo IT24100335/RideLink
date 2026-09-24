@@ -9,7 +9,6 @@ import com.ridelink.driver.entity.Driver;
 import com.ridelink.driver.entity.DriverAvailability;
 import com.ridelink.driver.entity.Vehicle;
 import com.ridelink.driver.entity.VehicleType;
-import com.ridelink.driver.exception.ResourceNotFoundException;
 import com.ridelink.driver.repository.DriverRepository;
 import com.ridelink.driver.repository.VehicleRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -52,8 +51,7 @@ class DriverServiceTest {
                 DriverAvailability.AVAILABLE,
                 "Colombo",
                 6.9271,
-                79.8612
-        );
+                79.8612);
 
         driverRequest = new DriverRequest(
                 2L,
@@ -61,10 +59,10 @@ class DriverServiceTest {
                 DriverAvailability.AVAILABLE,
                 "Colombo",
                 6.9271,
-                79.8612
-        );
+                79.8612);
     }
 
+    @SuppressWarnings("null")
     @Test
     @DisplayName("Should successfully create a driver profile")
     void createDriver_Success() {
@@ -81,6 +79,7 @@ class DriverServiceTest {
         assertEquals("Colombo", response.getServiceArea());
     }
 
+    @SuppressWarnings("null")
     @Test
     @DisplayName("Should throw IllegalArgumentException when creating duplicate driver account")
     void createDriver_DuplicateAccountId_ThrowsException() {
@@ -90,6 +89,7 @@ class DriverServiceTest {
         verify(driverRepository, never()).save(any(Driver.class));
     }
 
+    @SuppressWarnings("null")
     @Test
     @DisplayName("Should update driver availability successfully")
     void updateAvailability_Success() {
@@ -102,6 +102,7 @@ class DriverServiceTest {
         verify(driverRepository, times(1)).save(sampleDriver);
     }
 
+    @SuppressWarnings("null")
     @Test
     @DisplayName("Should update driver simulated location successfully")
     void updateLocation_Success() {
@@ -128,6 +129,7 @@ class DriverServiceTest {
         assertEquals(1L, available.get(0).getDriverId());
     }
 
+    @SuppressWarnings("null")
     @Test
     @DisplayName("Should register vehicle and link to driver")
     void registerVehicle_Success() {
