@@ -56,8 +56,7 @@ class AccountServiceTest {
                 "encodedPassword123",
                 "0771234567",
                 Role.PASSENGER,
-                AccountStatus.ACTIVE
-        );
+                AccountStatus.ACTIVE);
 
         registerRequest = new RegisterRequest(
                 "Kamal",
@@ -65,12 +64,12 @@ class AccountServiceTest {
                 "kamal@example.com",
                 "Password123",
                 "0771234567",
-                Role.PASSENGER
-        );
+                Role.PASSENGER);
     }
 
     @Test
     @DisplayName("Should successfully register a new account with BCrypt encoded password")
+    @SuppressWarnings("null")
     void register_Success() {
         when(accountRepository.existsByEmail(anyString())).thenReturn(false);
         when(passwordEncoder.encode("Password123")).thenReturn("encodedPassword123");
@@ -89,6 +88,7 @@ class AccountServiceTest {
 
     @Test
     @DisplayName("Should throw EmailAlreadyExistsException when registering existing email")
+    @SuppressWarnings("null")
     void register_DuplicateEmail_ThrowsException() {
         when(accountRepository.existsByEmail("kamal@example.com")).thenReturn(true);
 

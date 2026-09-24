@@ -13,6 +13,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
+
 @Service
 public class AccountService {
 
@@ -21,8 +23,8 @@ public class AccountService {
     private final JwtService jwtService;
 
     public AccountService(AccountRepository accountRepository,
-                          PasswordEncoder passwordEncoder,
-                          JwtService jwtService) {
+            PasswordEncoder passwordEncoder,
+            JwtService jwtService) {
         this.accountRepository = accountRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
@@ -56,7 +58,8 @@ public class AccountService {
         }
 
         if (account.getStatus() != AccountStatus.ACTIVE) {
-            throw new InvalidCredentialsException("Account is currently " + account.getStatus() + ". Please contact support.");
+            throw new InvalidCredentialsException(
+                    "Account is currently " + account.getStatus() + ". Please contact support.");
         }
 
         String fullName = account.getFirstName() + " " + account.getLastName();
@@ -66,14 +69,16 @@ public class AccountService {
     }
 
     public AccountResponse getAccountById(Long id) {
-        Account account = accountRepository.findById(id)
+        Long accountId = Objects.requireNonNull(id, "id must not be null");
+        Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new ResourceNotFoundException("Account not found with ID: " + id));
         return new AccountResponse(account);
     }
 
     @Transactional
     public AccountResponse updateAccount(Long id, UpdateAccountRequest request) {
-        Account account = accountRepository.findById(id)
+        Long accountId = Objects.requireNonNull(id, "id must not be null");
+        Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new ResourceNotFoundException("Account not found with ID: " + id));
 
         account.setFirstName(request.getFirstName().trim());
@@ -86,7 +91,8 @@ public class AccountService {
 
     @Transactional
     public AccountResponse updateAccountStatus(Long id, UpdateStatusRequest request) {
-        Account account = accountRepository.findById(id)
+        Long accountId = Objects.requireNonNull(id, "id must not be null");
+        Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new ResourceNotFoundException("Account not found with ID: " + id));
 
         account.setStatus(request.getStatus());
@@ -95,7 +101,8 @@ public class AccountService {
     }
 
     public Role getAccountRole(Long id) {
-        Account account = accountRepository.findById(id)
+        Long accountId = Objects.requireNonNull(id, "id must not be null");
+        Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new ResourceNotFoundException("Account not found with ID: " + id));
         return account.getRole();
     }
