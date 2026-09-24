@@ -7,6 +7,7 @@
 ---
 
 ## 1. Project Overview
+
 **RideLink** is an enterprise-grade backend microservices platform engineered for an on-demand ride-sharing service. The platform is architectured into four cohesive, independently deployable Spring Boot microservices, each adhering to the strict **Database-Per-Service** pattern backed by **Microsoft SQL Server (MS SQL)**.
 
 ---
@@ -23,8 +24,9 @@
 ---
 
 ## 3. Technology Stack
-- **Language / Runtime**: Java 25 LTS
-- **Framework**: Spring Boot 3.3.3
+
+- **Language / Runtime**: Java 22
+- **Framework**: Spring Boot 3.5.6
 - **Data Persistence**: Spring Data JPA & Hibernate
 - **Database Engine**: Microsoft SQL Server (MS SQL) with `mssql-jdbc`
 - **Security**: Spring Security 6.x & JJWT (JSON Web Token) HMAC-SHA256
@@ -37,7 +39,6 @@
 
 ## 4. System Architecture
 
-```
                                   ┌────────────────────────┐
                                   │  Postman / Swagger UI  │
                                   └───────────┬────────────┘
@@ -57,21 +58,23 @@
 │   account_db       │ │   driver_db        │   │     ride_db        │ │     fare_db        │
 │ (MS SQL Server)    │ │ (MS SQL Server)    │   │  (MS SQL Server)   │ │ (MS SQL Server)    │
 └────────────────────┘ └────────────────────┘   └────────────────────┘ └────────────────────┘
-```
 
 ---
 
 ## 5. Prerequisites & Database Setup
 
 ### 5.1 Prerequisites
-1. **Java Development Kit (JDK)**: JDK 25 installed (`java -version`).
-2. **Apache Maven**: Version 3.8+ installed (`mvn -version`).
+
+1. **Java Development Kit (JDK)**: JDK 22 installed (`java -version`).
+2. **Maven**: The included `mvnw.cmd` wrapper downloads Maven automatically when needed.
 3. **Microsoft SQL Server**: Installed locally (Developer/Express) or via Docker on port `1433`.
 4. **SQL Server Management Studio (SSMS)** or `sqlcmd`.
 
 ### 5.2 Initializing the 4 MS SQL Databases
+
 Open **SSMS**, connect to your SQL Server instance, and run the provided SQL script:
-```sql
+
+sql
 -- Located at: scripts/create-databases.sql
 USE master;
 GO
@@ -81,7 +84,6 @@ IF NOT EXISTS (SELECT name FROM sys.databases WHERE name = N'driver_db') CREATE 
 IF NOT EXISTS (SELECT name FROM sys.databases WHERE name = N'ride_db') CREATE DATABASE [ride_db];
 IF NOT EXISTS (SELECT name FROM sys.databases WHERE name = N'fare_db') CREATE DATABASE [fare_db];
 GO
-```
 
 ---
 
@@ -104,32 +106,25 @@ No secrets or passwords are hardcoded in the repository. All services support th
 ## 7. How to Run the Services
 
 ### 7.1 Startup Order
+
 To ensure interservice communication succeeds during testing, start the services in this recommended order:
+
 1. **Account Service** (Port `8081`)
 2. **Driver & Vehicle Service** (Port `8082`)
 3. **Fare & Payment Service** (Port `8084`)
 4. **Ride Management Service** (Port `8083`)
 
 ### 7.2 Terminal Startup Commands
+
 Open 4 separate terminal windows or command prompts:
 
-```bash
-# Terminal 1: Account Service
-cd account-service
-mvn spring-boot:run
+   .\mvnw.cmd -pl account-service spring-boot:run
 
-# Terminal 2: Driver & Vehicle Service
-cd driver-vehicle-service
-mvn spring-boot:run
+   .\mvnw.cmd -pl driver-vehicle-service spring-boot:run
 
-# Terminal 3: Fare & Payment Service
-cd fare-payment-service
-mvn spring-boot:run
+   .\mvnw.cmd -pl fare-payment-service spring-boot:run
 
-# Terminal 4: Ride Management Service
-cd ride-service
-mvn spring-boot:run
-```
+   .\mvnw.cmd -pl ride-service spring-boot:run
 
 ---
 
@@ -147,13 +142,15 @@ Once started, access the live interactive OpenAPI documentation for each service
 ## 9. Testing & Postman Instructions
 
 ### 9.1 Automated Unit Tests
+
 Run unit test suites across all 4 services simultaneously from the repository root:
-```bash
-mvn clean test
-```
-*(Or test each service individually: `cd account-service && mvn test`)*
+
+   .\mvnw.cmd clean test
+
+*(Or test each service individually: `.\mvnw.cmd -pl account-service test`)*
 
 ### 9.2 Postman Test Collection Execution
+
 1. Open **Postman**.
 2. Click **Import** and select:
    - `postman/RideLink_API.postman_collection.json`
@@ -168,6 +165,7 @@ mvn clean test
    - `06 Negative Tests`: Executes the 4 required failure scenarios.
 
 ### 9.3 Negative Test Scenarios Verified
+
 1. **No Available Driver**: Requests driver dispatch when no drivers are available (`404 NOT_FOUND`).
 2. **Invalid Ride Status Transition**: Attempting to skip directly from `REQUESTED` to `COMPLETED` (`400 BAD_REQUEST`).
 3. **Unauthorized Operation**: Passenger token attempting to alter administrative status (`403 FORBIDDEN`).
@@ -188,9 +186,12 @@ mvn clean test
 ## 11. Git Branching & Contribution Workflow
 
 This project adheres to professional collaborative version control:
+
 - `main`: Production release branch. Assessed version is tagged as `v1.0.0-release`.
 - `develop`: Shared integration branch for validated feature pull requests.
 - `feature/account-service`: Member 1 feature development.
 - `feature/driver-service`: Member 2 feature development.
 - `feature/ride-service`: Member 3 feature development.
 - `feature/fare-payment-service`: Member 4 feature development.
+#   R i d e L i n k  
+ 
