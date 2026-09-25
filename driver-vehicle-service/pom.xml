@@ -18,7 +18,7 @@
     <description>Driver and Vehicle Management Microservice for RideLink</description>
 
     <properties>
-        <java.version>22</java.version>
+        <java.version>25</java.version>
         <springdoc.version>2.8.13</springdoc.version>
     </properties>
 
