@@ -16,10 +16,10 @@
 
 | Member | Microservice | Primary Responsibility | Port | Persistence Boundary |
 | :--- | :--- | :--- | :--- | :--- |
-| **Member 1** | `account-service` | Passenger/Driver accounts, BCrypt password hashing, JWT token issuance & validation, RBAC (`PASSENGER`, `DRIVER`, `ADMIN`), account status management. | `8081` | `account_db` |
-| **Member 2** | `driver-vehicle-service` | Driver operational profile, vehicle registration, availability toggle (`AVAILABLE`, `BUSY`, `UNAVAILABLE`), location tracking, available drivers query. | `8082` | `driver_db` |
-| **Member 3** | `ride-service` | Ride booking, lifecycle state machine (`REQUESTED` → `ASSIGNED` → `ACCEPTED` → `IN_PROGRESS` → `COMPLETED` / `CANCELLED`), synchronous interservice orchestration. | `8083` | `ride_db` |
-| **Member 4** | `fare-payment-service` | Documented pricing engine ($\text{Rs. } 150 + \text{dist} \times \text{Rs. } 100/\text{km}$), simulated payments, transaction ledger, and itemized receipt generation. | `8084` | `fare_db` |
+| **IT24100335** | `account-service` | Passenger/Driver accounts, BCrypt password hashing, JWT token issuance & validation, RBAC (`PASSENGER`, `DRIVER`, `ADMIN`), account status management. | `8081` | `account_db` |
+| **IT24100198** | `driver-vehicle-service` | Driver operational profile, vehicle registration, availability toggle (`AVAILABLE`, `BUSY`, `UNAVAILABLE`), location tracking, available drivers query. | `8082` | `driver_db` |
+| **IT24100269** | `ride-service` | Ride booking, lifecycle state machine (`REQUESTED` → `ASSIGNED` → `ACCEPTED` → `IN_PROGRESS` → `COMPLETED` / `CANCELLED`), synchronous interservice orchestration. | `8083` | `ride_db` |
+| **IT24100480** | `fare-payment-service` | Documented pricing engine ($\text{Rs. } 150 + \text{dist} \times \text{Rs. } 100/\text{km}$), simulated payments, transaction ledger, and itemized receipt generation. | `8084` | `fare_db` |
 
 ---
 
